@@ -2,14 +2,20 @@ require('dotenv').config()
 const express = require('express')
 const app = express()
 const { sequelize } = require('./db')
+const controllers = require('./controllers')
 
 app.use(express.json())
 
+app.use('/user', controllers.UserController)
+app.use('/admin', controllers.AdminController)
+app.use('/post', controllers.PostController)
+app.use('/ticket', controllers.TicketController)
+app.use('/event', controllers.EventController)
 
 
 sequelize.authenticate()
     .then(() => {
-        sequelize.sync({force: true})
+        sequelize.sync()
         console.log(`Database: DB models were synchronized.`)
     })
     .then(() => {

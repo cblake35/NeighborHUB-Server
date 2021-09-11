@@ -1,6 +1,6 @@
 //Grab DB instance
 const { sequelize } = require('../db');
-const { DataTypes } = require('sequelize');
+const { DataTypes } = require('sequelize/types');
 
 //Grab model functions
 const DefineUser = require('./user');
@@ -10,18 +10,18 @@ const DefineTicket = require('./ticket');
 const DefineEvent = require('./event');
 
 //Define models and pass sequelize and DataTypes as arguments
-const User = DefineUser(sequelize, DataTypes);
-const Admin = DefineAdmin(sequelize, DataTypes);
-const Post = DefinePost(sequelize, DataTypes);
-const Ticket = DefineTicket(sequelize, DataTypes);
-const Event = DefineEvent(sequelize, DataTypes);
+const UserModel = DefineUser(sequelize, DataTypes);
+const AdminModel = DefineAdmin(sequelize, DataTypes);
+const PostModel = DefinePost(sequelize, DataTypes);
+const TicketModel = DefineTicket(sequelize, DataTypes);
+const EventModel = DefineEvent(sequelize, DataTypes);
 
 
 //Export models
 module.exports = {
-    User,
-    Admin,
-    Post,
-    Ticket,
-    Event
+    UserModel,
+    AdminModel,
+    PostModel,
+    TicketModel,
+    EventModel
 }
