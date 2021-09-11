@@ -6,13 +6,14 @@ const { sequelize } = require('./db')
 app.use(express.json())
 
 
+
 sequelize.authenticate()
     .then(() => {
-        sequelize.sync({ alter: true })
+        sequelize.sync({force: true})
         console.log(`Database: DB models were synchronized.`)
     })
     .then(() => {
-        app.listen(process.env.PORT, () => {
+        app.listen(process.env.DB_PORT, () => {
             console.log(`[Server]: Server is running.`)
         })
     })
