@@ -4,10 +4,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.TEXT,
             allowNull: false
         },
-        OwnerId: {
-            type: DataTypes.INTEGER,
-            allowNull: false
-        }
+        // OwnerId: {
+        //     type: DataTypes.INTEGER,
+        //     allowNull: false
+        // }
     })
     return Post;
 }

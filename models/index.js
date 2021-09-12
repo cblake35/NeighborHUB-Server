@@ -1,6 +1,6 @@
 //Grab DB instance
 const { sequelize } = require('../db');
-const { DataTypes } = require('sequelize/types');
+const { DataTypes } = require('sequelize');
 
 //Grab model functions
 const DefineUser = require('./user');
@@ -16,6 +16,8 @@ const PostModel = DefinePost(sequelize, DataTypes);
 const TicketModel = DefineTicket(sequelize, DataTypes);
 const EventModel = DefineEvent(sequelize, DataTypes);
 
+UserModel.hasMany(PostModel);
+PostModel.belongsTo(UserModel);
 
 //Export models
 module.exports = {
