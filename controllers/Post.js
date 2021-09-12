@@ -15,14 +15,13 @@ router.post('/create', validate, async (req, res) => {
                 id: req.user.id
             }
         });
-        
+
         if (myUser) {
             let newPost = await PostModel.create(myPost)
             await myUser.addPost(newPost)
             res.status(200).json(myUser)
         }
             
-
     } catch (err) {
         res.status(500).json({
             message: `An error occured, ${err}`

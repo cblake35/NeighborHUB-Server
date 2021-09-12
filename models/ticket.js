@@ -7,10 +7,6 @@ module.exports = (sequelize, DataTypes) => {
         TicketPost: {
             type: DataTypes.TEXT,
             allowNull: false
-        },
-        OwnerId: {
-            type: DataTypes.INTEGER,
-            allowNull: false
         }
     })
     return Ticket;

@@ -15,10 +15,6 @@ module.exports = (sequelize, DataTypes) => {
         EventDescription: {
             type: DataTypes.STRING,
             allowNull: false
-        },
-        OwnerId: {
-            type: DataTypes.INTEGER,
-            allowNull: false
         }
     })
     return Event;
