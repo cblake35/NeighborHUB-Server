@@ -44,6 +44,7 @@ router.post('/register', async (req, res) => {
 /* User Login Endpoint */
 router.post('/login', async (req, res) => {
     let { Email, Password } = req.body.user;
+    const userRole = 'Tenant';
 
     try {
         const FoundUser = await UserModel.findOne({
@@ -54,7 +55,7 @@ router.post('/login', async (req, res) => {
 
         if (FoundUser) {
             let verifiedUser = await bcrypt.compareSync(Password, FoundUser.Password);
-            let token = await jwt.sign({id: User.id, Role: userRole}, process.env.JWT_SECRET, {expiresIn: '24h'});
+            let token = await jwt.sign({id: FoundUser.id, Role: userRole}, process.env.JWT_SECRET, {expiresIn: '24h'});
 
             if (verifiedUser) {
                 res.status(200).json({

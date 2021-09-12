@@ -11,25 +11,46 @@ const validate = async (req, res, next) => {
         const payload = authorization ? jwt.verify(authorization.includes('Bearer') ? authorization.split(" ")[1] : authorization, process.env.JWT_SECRET) : undefined;
 
         if (payload) {
-            let foundUser = await UserModel.findOne({
-                where: {
-                    id: payload.id
+            if (payload.Role === 'Tenant') {
+                let foundUser = await UserModel.findOne({
+                    where: {
+                        id: payload.id
+                    }
+                });
+
+                if (foundUser) {
+                    req.user = foundUser;
+                    next();
+
+                } else {
+                    res.status(400).json({
+                        message: 'Not Authorized.',
+                    });
                 }
-            });
 
-            if (foundUser) {
-                req.user = foundUser;
-                next();
+            } else if (payload.Role === 'Admin') {
+                let foundUser = await AdminModel.findOne({
+                    where: {
+                        id: payload.id
+                    }
+                });
 
+                if (foundUser) {
+                    req.user = foundUser;
+                    next();
+
+                } else {
+                    res.status(400).json({
+                        message: 'Not Authorized.',
+                    });
+                }
+                
             } else {
                 res.status(400).json({
-                    message: 'Not Authorized.'
+                    message: 'Not Authorized.',
+                    mypayload: payload
                 });
             }
-
-        } else if (payload.role === 'Admin') {
-            req.user = payload;
-            next();
 
         } else {
             res.status(400).json({
@@ -39,7 +60,7 @@ const validate = async (req, res, next) => {
 
     } else {
         res.status(400).json({
-            message: 'Not Authorized.'
+            message: 'Not Authorized.',
         });
     }
 }

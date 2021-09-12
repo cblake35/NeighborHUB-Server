@@ -18,6 +18,9 @@ const EventModel = DefineEvent(sequelize, DataTypes);
 
 UserModel.hasMany(PostModel);
 PostModel.belongsTo(UserModel);
+AdminModel.hasMany(PostModel);
+PostModel.belongsTo(AdminModel);
+
 
 //Export models
 module.exports = {

@@ -15,7 +15,7 @@ app.use('/event', controllers.EventController)
 
 sequelize.authenticate()
     .then(() => {
-        sequelize.sync({force: true})
+        sequelize.sync()
         console.log(`Database: DB models were synchronized.`)
     })
     .then(() => {

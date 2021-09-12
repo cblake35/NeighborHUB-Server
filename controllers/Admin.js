@@ -7,7 +7,7 @@ const { AdminModel } = require('../models')
 
 /* Admin Register Endpoint */
 router.post('/register', async (req, res) => {
-    let { Email, Password, FirstName, LastName } = req.body.admin
+    let { Email, Password, FirstName, LastName } = req.body.user
     const userRole = 'Admin';
     const newAdmin = {
         Email,
@@ -19,11 +19,11 @@ router.post('/register', async (req, res) => {
 
     try {
         const Admin = await AdminModel.create(newAdmin)
-        let token = await jwt.sign({id: User.id, Role: userRole}, process.env.JWT_SECRET, {expiresIn: '24h'});
+        let token = await jwt.sign({id: Admin.id, Role: userRole}, process.env.JWT_SECRET, {expiresIn: '24h'});
 
         res.status(200).json({
             message: 'Admin succesfully registered',
-            admin: Admin,
+            user: Admin,
             sessionToken: token
         });
 
@@ -43,6 +43,7 @@ router.post('/register', async (req, res) => {
 /* Admin Login Endpoint */
 router.post('/login', async (req, res) => {
     let { Email, Password } = req.body.admin;
+    const userRole = 'Admin';
 
     try {
         const FoundAdmin = await AdminModel.findOne({
@@ -53,7 +54,7 @@ router.post('/login', async (req, res) => {
 
         if (FoundAdmin) {
             let verifiedAdmin = await bcrypt.compareSync(Password, FoundAdmin.Password);
-            let token = await jwt.sign({id: User.id, Role: userRole}, process.env.JWT_SECRET, {expiresIn: '24h'});
+            let token = await jwt.sign({id: FoundAdmin.id, Role: userRole}, process.env.JWT_SECRET, {expiresIn: '24h'});
 
             if (verifiedAdmin) {
                 res.status(200).json({
