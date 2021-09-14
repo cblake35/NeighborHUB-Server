@@ -20,6 +20,10 @@ UserModel.hasMany(PostModel);
 PostModel.belongsTo(UserModel);
 AdminModel.hasMany(PostModel);
 PostModel.belongsTo(AdminModel);
+UserModel.hasMany(TicketModel);
+TicketModel.belongsTo(UserModel);
+AdminModel.hasMany(TicketModel);
+TicketModel.belongsTo(AdminModel);
 
 
 //Export models

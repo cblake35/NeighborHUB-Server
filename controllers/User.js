@@ -7,7 +7,7 @@ const { UserModel } = require('../models');
 
 /* User Register Endpoint */
 router.post('/register', async (req, res) => {
-    let { Email, Password, FirstName, LastName, UnitNumber } = req.body.user
+    const { Email, Password, FirstName, LastName, UnitNumber } = req.body.user
     const userRole = 'Tenant';
     const newUser = {
         Email,
@@ -43,7 +43,7 @@ router.post('/register', async (req, res) => {
 
 /* User Login Endpoint */
 router.post('/login', async (req, res) => {
-    let { Email, Password } = req.body.user;
+    const { Email, Password } = req.body.user;
     const userRole = 'Tenant';
 
     try {

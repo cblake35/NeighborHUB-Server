@@ -7,7 +7,7 @@ const { AdminModel } = require('../models')
 
 /* Admin Register Endpoint */
 router.post('/register', async (req, res) => {
-    let { Email, Password, FirstName, LastName } = req.body.user
+    const { Email, Password, FirstName, LastName } = req.body.user
     const userRole = 'Admin';
     const newAdmin = {
         Email,
@@ -42,7 +42,7 @@ router.post('/register', async (req, res) => {
 
 /* Admin Login Endpoint */
 router.post('/login', async (req, res) => {
-    let { Email, Password } = req.body.admin;
+    const { Email, Password } = req.body.admin;
     const userRole = 'Admin';
 
     try {

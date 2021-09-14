@@ -5,7 +5,7 @@ const { PostModel, UserModel, AdminModel } = require('../models')
 
 /* Create Post Endpoint */
 router.post('/create', validate, async (req, res) => {
-    let { Post } = req.body.feed
+    const { Post } = req.body.feed
 
     try {
         if (req.user.Role === 'Tenant') {
@@ -18,7 +18,7 @@ router.post('/create', validate, async (req, res) => {
             if (myUser) {
                 let newPost = await PostModel.create({ Post });
                 await myUser.addPost(newPost);
-                res.status(200).json({ Post });
+                res.status(200).json({ newPost });
             }
 
         } else if (req.user.Role === 'Admin') {
@@ -31,7 +31,7 @@ router.post('/create', validate, async (req, res) => {
             if (myUser) {
                 let newPost = await PostModel.create({ Post });
                 await myUser.addPost(newPost);
-                res.status(200).json({ Post });
+                res.status(200).json({ newPost });
             }
         }
 
@@ -51,15 +51,15 @@ router.get('/allposts', validate, async (req, res) => {
     } catch (err) {
         res.status(500).json({
             message: `An error occured, ${err}`
-        })
+        });
     }
-})
+});
 
 /* Updates Posts Endpoint */
 router.put('/:id', validate, async (req, res) => {
-    let postId = req.params.id;
-    let { Post } = req.body.feed
-    let { id, Role } = req.user
+    const postId = req.params.id;
+    const { Post } = req.body.feed
+    const { id, Role } = req.user
 
     try {
         if (Role === 'Tenant') {
@@ -76,7 +76,8 @@ router.put('/:id', validate, async (req, res) => {
 
             await PostModel.update(updatePost, query);
             res.status(200).json({
-                message: "Post was updated by User"
+                message: "Post was updated by User",
+                updatePost
             });
 
         } else if (Role === 'Admin') {
@@ -92,7 +93,8 @@ router.put('/:id', validate, async (req, res) => {
 
             await PostModel.update(updatePost, query);
             res.status(200).json({
-                message: "Post was updated by Admin"
+                message: "Post was updated by Admin",
+                updatePost
             });
         }
 
@@ -105,8 +107,8 @@ router.put('/:id', validate, async (req, res) => {
 
 /* Delete Posts Endpoint */
 router.delete('/deletepost/:id', validate, async (req, res) => {
-    let postid = req.params.id;
-    let { id, Role } = req.user;
+    const postid = req.params.id;
+    const { id, Role } = req.user;
 
     try {
         if (Role === 'Tenant') {

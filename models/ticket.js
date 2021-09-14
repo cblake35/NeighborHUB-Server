@@ -7,6 +7,14 @@ module.exports = (sequelize, DataTypes) => {
         TicketPost: {
             type: DataTypes.TEXT,
             allowNull: false
+        },
+        isResolved: {
+            type: DataTypes.BOOLEAN,
+            allowNull: true
+        },
+        resolving: {
+            type: DataTypes.BOOLEAN,
+            allowNull: true
         }
     })
     return Ticket;
