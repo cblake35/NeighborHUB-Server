@@ -46,7 +46,9 @@ router.post('/create', validate, async (req, res) => {
         }
 
     } catch (err) {
-
+        res.status(500).json({
+            message: `An error has occured, ${err}`
+        });
     }
 })
 
@@ -219,4 +221,4 @@ router.delete('/deleteticket/:id', validate, async (req, res) => {
 
 });
 
-module.exports = router
+module.exports = router;
