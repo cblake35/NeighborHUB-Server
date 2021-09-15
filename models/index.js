@@ -24,6 +24,10 @@ UserModel.hasMany(TicketModel);
 TicketModel.belongsTo(UserModel);
 AdminModel.hasMany(TicketModel);
 TicketModel.belongsTo(AdminModel);
+UserModel.hasMany(EventModel);
+EventModel.belongsTo(UserModel);
+AdminModel.hasMany(EventModel);
+EventModel.belongsTo(AdminModel);
 
 
 //Export models

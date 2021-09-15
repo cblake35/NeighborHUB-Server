@@ -19,7 +19,7 @@ router.post('/register', async (req, res) => {
 
     try {
         const Admin = await AdminModel.create(newAdmin)
-        let token = await jwt.sign({id: Admin.id, Role: userRole}, process.env.JWT_SECRET, {expiresIn: '24h'});
+        let token = await jwt.sign({ id: Admin.id, Role: userRole }, process.env.JWT_SECRET, { expiresIn: '24h' });
 
         res.status(200).json({
             message: 'Admin succesfully registered',
@@ -54,31 +54,32 @@ router.post('/login', async (req, res) => {
 
         if (FoundAdmin) {
             let verifiedAdmin = await bcrypt.compareSync(Password, FoundAdmin.Password);
-            let token = await jwt.sign({id: FoundAdmin.id, Role: userRole}, process.env.JWT_SECRET, {expiresIn: '24h'});
+            let token = await jwt.sign({ id: FoundAdmin.id, Role: userRole }, process.env.JWT_SECRET, { expiresIn: '24h' });
 
             if (verifiedAdmin) {
                 res.status(200).json({
                     message: 'Succesfully logged in.',
                     admin: FoundAdmin,
                     sessionToken: token
-                })
+                });
+
             } else {
                 res.status(400).json({
                     message: 'Login failed. Incorrect email or password'
-                })
+                });
             }
 
         } else {
             res.status(400).json({
                 message: 'Login failed. Incorrect email or password'
-            })
+            });
         }
 
     } catch (err) {
         res.status(500).json({
             message: `[error]: ${err}`
-        })
+        });
     }
-})
+});
 
 module.exports = router

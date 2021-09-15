@@ -5,32 +5,35 @@ const { PostModel, UserModel, AdminModel } = require('../models')
 
 /* Create Post Endpoint */
 router.post('/create', validate, async (req, res) => {
-    const { Post } = req.body.feed
+    const { Post } = req.body.feed;
+    const { id, Role } = req.user;
 
     try {
-        if (req.user.Role === 'Tenant') {
+        if (Role === 'Tenant') {
             let myUser = await UserModel.findOne({
                 where: {
-                    id: req.user.id
+                    id: id
                 }
             });
 
             if (myUser) {
                 let newPost = await PostModel.create({ Post });
                 await myUser.addPost(newPost);
+
                 res.status(200).json({ newPost });
             }
 
-        } else if (req.user.Role === 'Admin') {
+        } else if (Role === 'Admin') {
             let myUser = await AdminModel.findOne({
                 where: {
-                    id: req.user.id
+                    id: id
                 }
             });
 
             if (myUser) {
                 let newPost = await PostModel.create({ Post });
                 await myUser.addPost(newPost);
+
                 res.status(200).json({ newPost });
             }
         }
@@ -48,6 +51,7 @@ router.get('/allposts', validate, async (req, res) => {
     try {
         let AllPosts = await PostModel.findAll();
         res.status(200).json({ AllPosts });
+
     } catch (err) {
         res.status(500).json({
             message: `An error occured, ${err}`
@@ -75,6 +79,7 @@ router.put('/:id', validate, async (req, res) => {
             }
 
             await PostModel.update(updatePost, query);
+
             res.status(200).json({
                 message: "Post was updated by User",
                 updatePost
@@ -92,6 +97,7 @@ router.put('/:id', validate, async (req, res) => {
             }
 
             await PostModel.update(updatePost, query);
+
             res.status(200).json({
                 message: "Post was updated by Admin",
                 updatePost
@@ -112,35 +118,47 @@ router.delete('/deletepost/:id', validate, async (req, res) => {
 
     try {
         if (Role === 'Tenant') {
-            const query = {
+            let myUser = await UserModel.findOne({
                 where: {
-                    id: postid,
-                    UserId: id
+                    id: id
                 }
-            }
-
-            let myUser = await UserModel.findOne({ where: { id: id } });
-            let myDeletedPost = await PostModel.destroy(query);
-
-            myUser.removePost(myDeletedPost);
-            res.status(200).json({
-                message: 'Successfully deleted post as a User'
             });
+
+            if (myUser) {
+                const query = {
+                    where: {
+                        id: postid,
+                        UserId: id
+                    }
+                }
+
+                await PostModel.destroy(query);
+
+                res.status(200).json({
+                    message: 'Successfully deleted post as a User'
+                });
+            }
 
         } else if (Role === 'Admin') {
-            const query = {
+            let myUser = await AdminModel.findOne({
                 where: {
-                    id: postid,
+                    id: id
                 }
-            }
-
-            let myUser = await AdminModel.findOne({ where: { id: id } });
-            let myDeletedPost = await PostModel.destroy(query);
-
-            myUser.removePost(myDeletedPost);
-            res.status(200).json({
-                message: 'Successfully deleted post as an Admin'
             });
+
+            if (myUser) {
+                const query = {
+                    where: {
+                        id: postid
+                    }
+                }
+
+                await PostModel.destroy(query);
+
+                res.status(200).json({
+                    message: 'Successfully deleted post as an Admin.'
+                });
+            }
         }
 
     } catch (err) {

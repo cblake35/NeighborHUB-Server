@@ -44,11 +44,10 @@ const validate = async (req, res, next) => {
                         message: 'Not Authorized.',
                     });
                 }
-                
+
             } else {
                 res.status(400).json({
                     message: 'Not Authorized.',
-                    mypayload: payload
                 });
             }
 

@@ -5,6 +5,6 @@ const sequelize = new Sequelize(process.env.DB_DBNAME, process.env.DB_USER, proc
     dialect: 'postgres'
 })
 
-module.exports= {
+module.exports = {
     sequelize,
 }
