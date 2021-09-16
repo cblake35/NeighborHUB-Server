@@ -55,7 +55,7 @@ router.post('/create', validate, async (req, res) => {
             message: `An error occured, ${err}`
         });
     }
-})
+});
 
 /* Get Events by ID Endpoint */
 router.get('/myevents', validate, async (req, res) => {

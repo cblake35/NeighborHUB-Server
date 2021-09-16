@@ -6,16 +6,17 @@ const { UserModel, AdminModel, TicketModel } = require('../models');
 /* Create Ticket Endpoint */
 router.post('/create', validate, async (req, res) => {
     const { TicketTitle, TicketPost } = req.body.ticket;
+    const {id, Role} = req.user;
     const myTicket = {
         TicketTitle,
         TicketPost
     }
 
     try {
-        if (req.user.Role === 'Tenant') {
+        if (Role === 'Tenant') {
             let User = await UserModel.findOne({
                 where: {
-                    id: req.user.id
+                    id: id
                 }
             });
 
@@ -29,10 +30,10 @@ router.post('/create', validate, async (req, res) => {
                 });
             }
 
-        } else if (req.user.Role === 'Admin') {
+        } else if (Role === 'Admin') {
             let User = await AdminModel.findOne({
                 where: {
-                    id: req.user.id
+                    id: id
                 }
             });
 
@@ -57,24 +58,32 @@ router.post('/create', validate, async (req, res) => {
 /* Get All Tickets by User Endpoint */
 router.get('/:id', validate, async (req, res) => {
     const userId = req.params.id;
+    const { id } = req.user;
 
     try {
-        let User = await UserModel.findOne({
-            where: {
-                id: userId
-            }
-        });
-
-        if (User) {
-            let myTickets = await TicketModel.findAll({
+        if (id == userId) {
+            let User = await UserModel.findOne({
                 where: {
-                    UserId: userId
-                },
-                include: UserModel
+                    id: userId
+                }
             });
 
-            res.status(200).json({
-                myTickets
+            if (User) {
+                let myTickets = await TicketModel.findAll({
+                    where: {
+                        UserId: userId
+                    },
+                    include: UserModel
+                });
+
+                res.status(200).json({
+                    myTickets
+                });
+            }
+
+        } else {
+            res.status(400).json({
+                message: 'Not authorized.'
             });
         }
 
@@ -87,28 +96,36 @@ router.get('/:id', validate, async (req, res) => {
 
 /* Get All Tickets(Admin) */
 router.get('/admin/alltickets', validate, async (req, res) => {
+    const { id, Role } = req.user;
 
     try {
-        let Admin = await AdminModel.findOne({
-            where: {
-                id: req.user.id,
-                Role: 'Admin'
-            }
-        })
-
-        if (Admin) {
-            let allTickets = await TicketModel.findAll({ include: UserModel })
-            await Admin.getTickets(allTickets);
-
-            res.status(200).json({
-                allTickets
+        if (Role !== 'Admin') {
+            res.status(400).json({
+                message: 'Not authorized.'
             });
 
         } else {
-            res.status(500).json({
-                message: 'Not Authorized.'
+            let Admin = await AdminModel.findOne({
+                where: {
+                    id: id,
+                    Role: 'Admin'
+                }
             });
+
+            if (Admin) {
+                let allTickets = await TicketModel.findAll({ include: [UserModel, AdminModel] })
+
+                res.status(200).json({
+                    allTickets
+                });
+
+            } else {
+                res.status(500).json({
+                    message: 'Not Authorized.'
+                });
+            }
         }
+
 
     } catch (err) {
         res.status(500).json({
@@ -125,7 +142,7 @@ router.put('/updateticket/:id', validate, async (req, res) => {
 
     try {
         if (Role === 'Tenant') {
-            const updateTicket = {
+            const updatedTicket = {
                 TicketTitle: TicketTitle,
                 TicketPost: TicketPost
             }
@@ -137,15 +154,15 @@ router.put('/updateticket/:id', validate, async (req, res) => {
                 }
             }
 
-            await TicketModel.update(updateTicket, query);
+            await TicketModel.update(updatedTicket, query);
 
             res.status(200).json({
                 message: "Ticket was updated by User",
-                updateTicket
+                updatedTicket
             });
 
         } else if (Role === 'Admin') {
-            const updateTicket = {
+            const updatedTicket = {
                 TicketTitle: TicketTitle,
                 TicketPost: TicketPost,
                 isResolved: isResolved,
@@ -158,10 +175,11 @@ router.put('/updateticket/:id', validate, async (req, res) => {
                 }
             }
 
-            await TicketModel.update(updateTicket, query);
+            await TicketModel.update(updatedTicket, query);
+
             res.status(200).json({
-                message: "Ticket was updated by Admin",
-                updateTicket
+                message: "Ticket was updated by an Admin",
+                updatedTicket
             });
         }
 

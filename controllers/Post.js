@@ -62,13 +62,13 @@ router.get('/allposts', validate, async (req, res) => {
 /* Updates Posts Endpoint */
 router.put('/:id', validate, async (req, res) => {
     const postId = req.params.id;
-    const { Post } = req.body.feed
-    const { id, Role } = req.user
+    const { Post } = req.body.feed;
+    const { id, Role } = req.user;
 
     try {
         if (Role === 'Tenant') {
-            const updatePost = {
-                Post: Post
+            const updatedPost = {
+                Post,
             }
 
             const query = {
@@ -78,16 +78,16 @@ router.put('/:id', validate, async (req, res) => {
                 }
             }
 
-            await PostModel.update(updatePost, query);
+            await PostModel.update(updatedPost, query);
 
             res.status(200).json({
                 message: "Post was updated by User",
-                updatePost
+                updatedPost
             });
 
         } else if (Role === 'Admin') {
-            const updatePost = {
-                Post: Post
+            const updatedPost = {
+                Post,
             }
 
             const query = {
@@ -96,11 +96,11 @@ router.put('/:id', validate, async (req, res) => {
                 }
             }
 
-            await PostModel.update(updatePost, query);
+            await PostModel.update(updatedPost, query);
 
             res.status(200).json({
                 message: "Post was updated by Admin",
-                updatePost
+                updatedPost
             });
         }
 
