@@ -2,6 +2,8 @@ require('dotenv').config()
 const express = require('express')
 const app = express()
 const { sequelize } = require('./db')
+
+app.use(require('./middleware/headers'))
 const controllers = require('./controllers')
 
 app.use(express.json())

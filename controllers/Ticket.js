@@ -6,7 +6,7 @@ const { UserModel, AdminModel, TicketModel } = require('../models');
 /* Create Ticket Endpoint */
 router.post('/create', validate, async (req, res) => {
     const { TicketTitle, TicketPost } = req.body.ticket;
-    const {id, Role} = req.user;
+    const { id, Role } = req.user;
     const myTicket = {
         TicketTitle,
         TicketPost
@@ -56,30 +56,27 @@ router.post('/create', validate, async (req, res) => {
 })
 
 /* Get All Tickets by User Endpoint */
-router.get('/:id', validate, async (req, res) => {
-    const userId = req.params.id;
+router.get('/mytickets', validate, async (req, res) => {
     const { id } = req.user;
 
     try {
-        if (id == userId) {
-            let User = await UserModel.findOne({
+        let User = await UserModel.findOne({
+            where: {
+                id: id
+            }
+        });
+
+        if (User) {
+            let myTickets = await TicketModel.findAll({
                 where: {
-                    id: userId
-                }
+                    UserId: id
+                },
+                include: UserModel
             });
 
-            if (User) {
-                let myTickets = await TicketModel.findAll({
-                    where: {
-                        UserId: userId
-                    },
-                    include: UserModel
-                });
-
-                res.status(200).json({
-                    myTickets
-                });
-            }
+            res.status(200).json({
+                myTickets
+            });
 
         } else {
             res.status(400).json({

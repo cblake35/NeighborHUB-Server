@@ -7,7 +7,7 @@ const { AdminModel } = require('../models')
 
 /* Admin Register Endpoint */
 router.post('/register', async (req, res) => {
-    const { Email, Password, FirstName, LastName } = req.body.user
+    const { Email, Password, FirstName, LastName } = req.body.admin
     const userRole = 'Admin';
     const newAdmin = {
         Email,
@@ -59,7 +59,7 @@ router.post('/login', async (req, res) => {
             if (verifiedAdmin) {
                 res.status(200).json({
                     message: 'Succesfully logged in.',
-                    admin: FoundAdmin,
+                    user: FoundAdmin,
                     sessionToken: token
                 });
 

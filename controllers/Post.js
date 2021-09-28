@@ -13,7 +13,7 @@ router.post('/create', validate, async (req, res) => {
             let myUser = await UserModel.findOne({
                 where: {
                     id: id
-                }
+                },
             });
 
             if (myUser) {
@@ -47,10 +47,15 @@ router.post('/create', validate, async (req, res) => {
 
 /* Get All Posts Endpoint */
 router.get('/allposts', validate, async (req, res) => {
+    const { id, Role } = req.user
 
     try {
-        let AllPosts = await PostModel.findAll();
-        res.status(200).json({ AllPosts });
+        let AllPosts = await PostModel.findAll({ include: UserModel });
+        res.status(200).json({
+            AllPosts,
+            userId: id,
+            userRole: Role
+        });
 
     } catch (err) {
         res.status(500).json({
