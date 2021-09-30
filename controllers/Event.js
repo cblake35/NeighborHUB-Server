@@ -5,13 +5,15 @@ const { EventModel, UserModel, AdminModel } = require('../models')
 
 /* Create Event Endpoint */
 router.post('/create', validate, async (req, res) => {
-    const { EventName, EventLocation, EventDate, EventDescription } = req.body.event;
+    const { EventName, EventPoster, EventDate, EventTime, EventUrl } = req.body.event;
     const { id, Role } = req.user
     const eventData = {
+        EventPoster,
         EventName,
-        EventLocation,
         EventDate,
-        EventDescription
+        EventTime,
+        EventUrl,
+        
     }
 
     try {

@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false
         },
-        EventLocation: {
+        EventPoster: {
             type: DataTypes.STRING,
             allowNull: false
         },
@@ -12,7 +12,11 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false
         },
-        EventDescription: {
+        EventTime: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        EventUrl: {
             type: DataTypes.STRING,
             allowNull: false
         }
