@@ -21,7 +21,7 @@ sequelize.authenticate()
         console.log(`Database: DB models were synchronized.`)
     })
     .then(() => {
-        app.listen(process.env.DB_PORT, () => {
+        app.listen(process.env.PORT, () => {
             console.log(`[Server]: Server is running.`)
         })
     })
