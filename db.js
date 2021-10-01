@@ -8,9 +8,6 @@ const { Sequelize } = require('sequelize')
 
 const sequelize = new Sequelize(process.env.DATABASE_URL, process.env.HOST != 'localhost' ? {
     dialect: 'postgres',
-    define: {
-        timestamps: false
-    },
     dialectOptions: {
         ssl: {
             require: true,
