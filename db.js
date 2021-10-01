@@ -18,9 +18,6 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, process.env.HOST != 'l
     :
     {
         dialect: 'postgres',
-        define: {
-            timestamps: false
-        }
     }
 )
 
