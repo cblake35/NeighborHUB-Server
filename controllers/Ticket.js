@@ -5,11 +5,12 @@ const { UserModel, AdminModel, TicketModel } = require('../models');
 
 /* Create Ticket Endpoint */
 router.post('/create', validate, async (req, res) => {
-    const { TicketTitle, TicketPost } = req.body.ticket;
+    const { TicketTitle, TicketPost, UnitNumber } = req.body.ticket;
     const { id, Role } = req.user;
     const myTicket = {
         TicketTitle,
-        TicketPost
+        TicketPost,
+        UnitNumber
     }
 
     try {

@@ -8,6 +8,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.TEXT,
             allowNull: false
         },
+        UnitNumber: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
         isResolved: {
             type: DataTypes.BOOLEAN,
             allowNull: true
