@@ -16,4 +16,4 @@ allows communication between the client and the database to access information f
 - Role-based access control(RBAC)
 
 ## Authors
--Chris Blake
+- Chris Blake
