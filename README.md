@@ -5,15 +5,15 @@ This is the back-end server application for the NeighborHUB client. It is build 
 allows communication between the client and the database to access information for full CRUD functionality.
 
 ## Tech Stack Used
--Node.js
--Express
--PostgreSQL
--Sequelize
+- Node.js
+- Express
+- PostgreSQL
+- Sequelize
 
 ## Features
--JWT Tokenization
--Bcrypt password hashing
--Role-based access control(RBAC)
+- JWT Tokenization
+- Bcrypt password hashing
+- Role-based access control(RBAC)
 
 ## Authors
 -Chris Blake
