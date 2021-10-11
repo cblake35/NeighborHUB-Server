@@ -161,4 +161,5 @@ router.delete('/deleteevent/:id', validate, async (req, res) => {
     }
 })
 
+
 module.exports = router;
